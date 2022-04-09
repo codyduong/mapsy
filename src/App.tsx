@@ -1,22 +1,7 @@
-import React, { ReactElement, useEffect, useRef } from 'react';
-import './App.css';
+import { GoogleMap } from './components/map';
 
 import { Status, Wrapper } from '@googlemaps/react-wrapper';
-
-function MyMapComponent({ center, zoom }: { center: google.maps.LatLngLiteral; zoom: number }) {
-	const ref = useRef();
-
-	useEffect(() => {
-		// @ts-ignore
-		new window.google.maps.Map(ref.current!, {
-			center,
-			zoom,
-		});
-	});
-
-	// @ts-ignore
-	return <div ref={ref!} id="map" />;
-}
+import { ReactElement } from 'react';
 
 const render = (status: Status): ReactElement => {
 	if (status === Status.LOADING) return <h3>{status} ..</h3>;
@@ -26,13 +11,15 @@ const render = (status: Status): ReactElement => {
 };
 
 function App() {
-	const center = { lat: -34.397, lng: 150.644 };
-	const zoom = 4;
+	const center = { lng: 38.957799, lat: -95.254341 };
+	const zoom = 8;
 
 	return (
-		<Wrapper apiKey={'AIzaSyCdrceqUk17BLwecJBBRzLqJXDnvL_NSAE'} render={render}>
-			<MyMapComponent center={center} zoom={zoom} />
-		</Wrapper>
+		<>
+			<Wrapper apiKey={'AIzaSyCdrceqUk17BLwecJBBRzLqJXDnvL_NSAE'} render={render}>
+				<GoogleMap center={center} zoom={zoom}></GoogleMap>
+			</Wrapper>
+		</>
 	);
 }
 
