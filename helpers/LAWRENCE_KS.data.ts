@@ -201,7 +201,7 @@ export const CAMERAS_LAWRENCE_KS_UNPARSED: CAMERA_LAWRENCE_KS[] = [
         x: -10609519.462921897, 
         y: 4715514.159583933,
         lat: 38.957001,
-        lng: -95.204922
+        lng: -95.306935
     },
     {
         LABEL: 'BOB BILLINGS & KASOLD',
