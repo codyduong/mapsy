@@ -1,26 +1,22 @@
-import { GoogleMap } from './components/map';
+import GoogleMap from './components/map';
+import { ThemeProvider } from './contexts/Theme';
+import styled from 'styled-components';
+import { SearchBar } from './components/searchbar';
 
-import { Status, Wrapper } from '@googlemaps/react-wrapper';
-import { ReactElement } from 'react';
-
-const render = (status: Status): ReactElement => {
-	if (status === Status.LOADING) return <h3>{status} ..</h3>;
-	if (status === Status.FAILURE) return <h3>{status} ...</h3>;
-	// @ts-ignore
-	return null;
-};
+const AppWrapper = styled.div`
+    width: 100vw;
+    height: 100vh;
+`;
 
 function App() {
-	const center = { lng: 38.957799, lat: -95.254341 };
-	const zoom = 8;
-
-	return (
-		<>
-			<Wrapper apiKey={''} render={render}>
-				<GoogleMap center={center} zoom={zoom}></GoogleMap>
-			</Wrapper>
-		</>
-	);
+    return (
+        <ThemeProvider>
+            <AppWrapper>
+                <SearchBar />
+                <GoogleMap />
+            </AppWrapper>
+        </ThemeProvider>
+    );
 }
 
 export default App;
