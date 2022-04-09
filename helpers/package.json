@@ -1,0 +1,20 @@
+{
+  "name": "helpers",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "ts-jest": "^27.1.4",
+    "ts-node": "^10.7.0"
+  },
+  "scripts": {
+    "export": "ts-node index.ts"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "firebase": "^9.6.10",
+    "firebase-admin": "^10.0.2"
+  }
+}

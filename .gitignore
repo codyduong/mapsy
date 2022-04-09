@@ -21,3 +21,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# helpers
+helpers/node_modules
+helpers/export.json
+helpers/hackku-**.json
+helpers/.env
