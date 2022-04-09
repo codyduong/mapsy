@@ -73,7 +73,7 @@ export const CAMERAS_LAWRENCE_KS_UNPARSED: CAMERA_LAWRENCE_KS[] = [
         x: -10607447.425194876, 
         y: 4717596.282856306,
         lat: 38.971544,
-        lng: 95.288321
+        lng: -95.288321
     },
     {
         LABEL: '23RD & O\'CONNELL',
