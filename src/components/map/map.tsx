@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Status, Wrapper } from '@googlemaps/react-wrapper';
+import { Status } from '@googlemaps/react-wrapper';
 import { CircularProgress } from '@mui/material';
 import { Bounds, transformGoogleBounds } from './map.util';
 import api from '../../api';
@@ -13,7 +13,7 @@ const LAWRENCE_BOUNDS = {
 };
 
 const WrapperDiv = styled.div`
-	width: 100vw;
+    width: 100vw;
     height: 100vh;
     position: absolute;
     top: 0;
@@ -21,24 +21,18 @@ const WrapperDiv = styled.div`
 `;
 
 const LoadingWrapper = styled.div`
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
-	position: absolute;
-	display: flex;
-	justify-content: center;
-	align-content: center;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-content: center;
 `;
 
 const center = { lng: 38.957799, lat: -95.254341 };
 const zoom = 8;
-
-const render = (status: Status): JSX.Element => {
-    if (status === Status.LOADING) return <LoadingWrapper><CircularProgress /></LoadingWrapper>;
-    if (status === Status.FAILURE) return <LoadingWrapper><CircularProgress /></LoadingWrapper>;
-    return <></>;
-};
 
 export function GoogleMap() {
     const ref = useRef<HTMLDivElement>(null);
@@ -48,16 +42,18 @@ export function GoogleMap() {
 
     useEffect(() => {
         if (ref.current && !map) {
-            setMap(new window.google.maps.Map(ref.current, {
-                center,
-                zoom,
-                mapTypeControl: false,
-                restriction: {
-                    latLngBounds: LAWRENCE_BOUNDS,
-                    strictBounds: false,
-                },
-                streetViewControlOptions: null
-            }));
+            setMap(
+                new window.google.maps.Map(ref.current, {
+                    center,
+                    zoom,
+                    mapTypeControl: false,
+                    restriction: {
+                        latLngBounds: LAWRENCE_BOUNDS,
+                        strictBounds: false,
+                    },
+                    streetViewControlOptions: null,
+                })
+            );
         }
     }, [ref, map]);
 
@@ -66,7 +62,7 @@ export function GoogleMap() {
             ['click', 'idle'].forEach((eventName) =>
                 google.maps.event.clearListeners(map, eventName)
             );
-        
+
             // https://developers.google.com/maps/documentation/javascript/events
             //map.addListener('click', onClick);
             map.addListener('bounds_changed', () => {
@@ -83,7 +79,7 @@ export function GoogleMap() {
                 setIsFetching(false);
             }
         })();
-    }, [bounds]);
+    }, [bounds, setIsFetching]);
 
     return (
         <WrapperDiv>
@@ -93,7 +89,5 @@ export function GoogleMap() {
 }
 
 export default function GoogleMapWrapper() {
-    return <>
-        {process.env.REACT_APP_GOOGLE_MAPS_API_KEY && <Wrapper apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY} render={render}><GoogleMap /></Wrapper>}
-    </>;
+    return <GoogleMap />;
 }
