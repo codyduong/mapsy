@@ -22,7 +22,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "ci": "yarn install --frozen-lockfile",
-    "lint": "prettier-eslint --write \"./{src}/**/*{ts, tsx}\""
+    "lint": "yarn eslint"
   },
   "eslintConfig": {
     "extends": [
