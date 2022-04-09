@@ -1,11 +1,11 @@
 import { ThemeProvider } from './contexts/Theme';
 import styled from 'styled-components';
-import api from './api';
-
 import GoogleMap from './components/map';
 import SearchBar from './components/search';
 import { CircularProgress } from '@mui/material';
 import { Status, Wrapper } from '@googlemaps/react-wrapper';
+import { SearchBar } from './components/searchbar';
+import api from './api';
 
 const AppWrapper = styled.div`
     width: 100vw;
@@ -40,10 +40,6 @@ const render = (status: Status): JSX.Element => {
 };
 
 function App() {
-    (async () => {
-        console.log(await api.getWeather({ lat: 38.971488, lng: -95.325759 }));
-    })();
-
     return (
         <ThemeProvider>
             <AppWrapper>
