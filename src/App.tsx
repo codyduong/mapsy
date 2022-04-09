@@ -4,8 +4,6 @@ import GoogleMap from './components/map';
 import SearchBar from './components/search';
 import { CircularProgress } from '@mui/material';
 import { Status, Wrapper } from '@googlemaps/react-wrapper';
-import { SearchBar } from './components/searchbar';
-import api from './api';
 
 const AppWrapper = styled.div`
     width: 100vw;
