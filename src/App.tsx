@@ -1,6 +1,9 @@
-import GoogleMap from './components/map';
 import { ThemeProvider } from './contexts/Theme';
 import styled from 'styled-components';
+import GoogleMap from './components/map';
+import SearchBar from './components/search';
+import { CircularProgress } from '@mui/material';
+import { Status, Wrapper } from '@googlemaps/react-wrapper';
 import { SearchBar } from './components/searchbar';
 import api from './api';
 
@@ -9,17 +12,45 @@ const AppWrapper = styled.div`
     height: 100vh;
 `;
 
-function App() {
-    (async () => {
-        console.log(await api.getWeather({        lat: 38.971488,
-            lng: -95.325759}));
-    })();
+const LoadingWrapper = styled.div`
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+`;
 
+const render = (status: Status): JSX.Element => {
+    if (status === Status.LOADING)
+        return (
+            <LoadingWrapper>
+                <CircularProgress />
+            </LoadingWrapper>
+        );
+    if (status === Status.FAILURE)
+        return (
+            <LoadingWrapper>
+                <CircularProgress />
+            </LoadingWrapper>
+        );
+    return <></>;
+};
+
+function App() {
     return (
         <ThemeProvider>
             <AppWrapper>
-                <SearchBar />
-                <GoogleMap />
+                <Wrapper
+                    apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string}
+                    render={render}
+                    libraries={['places']}
+                >
+                    <SearchBar />
+                    <GoogleMap />
+                </Wrapper>
             </AppWrapper>
         </ThemeProvider>
     );
