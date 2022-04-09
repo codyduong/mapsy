@@ -11,9 +11,6 @@ const firebaseConfig = {
     measurementId: process.env.REACT_APP_measurementId
 };
 
-console.log(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
-console.log(process.env);
-
 const Firebase: firebase.app.App = firebase.initializeApp(firebaseConfig);
 
 export default Firebase;

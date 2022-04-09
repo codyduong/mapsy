@@ -1,4 +1,3 @@
-import { SelectUnstyledOwnerState } from '@mui/base';
 import Firebase from '../App.firebase';
 import type { Bounds } from '../components/map';
 
@@ -11,6 +10,13 @@ type Conditions = {
     temperature: number;
     unit: string;
     weather: string;
+}
+
+export type Camera = {
+    label: string,
+    image: string,
+    lat: number, //+ is North, - is South
+    lng: number, //+ is East,, - is West
 }
 
 const api = {
@@ -42,7 +48,7 @@ const api = {
                 values.push(value);
             }
         }
-        return values;
+        return values as Camera[];
     },
     getWeather: async(latNLng: LatNLng) => {
         const url = `https://api.weather.gov/points/${latNLng.lat},${latNLng.lng}`;

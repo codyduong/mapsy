@@ -8,6 +8,7 @@ import { Status, Wrapper } from '@googlemaps/react-wrapper';
 const AppWrapper = styled.div`
     width: 100vw;
     height: 100vh;
+    overflow: hidden;
 `;
 
 const LoadingWrapper = styled.div`
