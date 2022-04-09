@@ -1,5 +1,17 @@
+import { SelectUnstyledOwnerState } from '@mui/base';
 import Firebase from '../App.firebase';
 import type { Bounds } from '../components/map';
+
+type LatNLng = {
+    lat: number,
+    lng: number
+}
+
+type Conditions = {
+    temperature: number;
+    unit: string;
+    weather: string;
+}
 
 const api = {
     getCamerasInBounds: async (bounds: Bounds) => {
@@ -31,6 +43,14 @@ const api = {
             }
         }
         return values;
+    },
+    getWeather: async(latNLng: LatNLng) => {
+        const url = `https://api.weather.gov/points/${latNLng.lat},${latNLng.lng}`;
+        const weatherhourly = await (await fetch(url)).json();
+        console.log(weatherhourly);
+        const weather = await (await fetch(weatherhourly.properties.forecastHourly)).json();
+        const conditions = {temperature: weather.properties.periods[0].temperature, unit: weather.properties.periods[0].temperatureUnit, weather: weather.properties.periods[0].shortForecast};
+        return conditions as Conditions;
     }
 };
 
