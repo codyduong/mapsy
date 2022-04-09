@@ -16,7 +16,7 @@ function App() {
 
 	return (
 		<>
-			<Wrapper apiKey={'AIzaSyCdrceqUk17BLwecJBBRzLqJXDnvL_NSAE'} render={render}>
+			<Wrapper apiKey={''} render={render}>
 				<GoogleMap center={center} zoom={zoom}></GoogleMap>
 			</Wrapper>
 		</>
