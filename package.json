@@ -3,21 +3,14 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
+		"@googlemaps/react-wrapper": "^1.1.30",
 		"@mui/icons-material": "^5.6.0",
 		"@mui/material": "^5.6.0",
 		"@mui/styled-engine-sc": "^5.5.2",
-		"@testing-library/jest-dom": "^5.14.1",
-		"@testing-library/react": "^12.0.0",
-		"@testing-library/user-event": "^13.2.1",
-		"@types/jest": "^27.0.1",
-		"@types/node": "^16.7.13",
-		"@types/react": "^17.0.20",
-		"@types/react-dom": "^17.0.9",
 		"react": "^18.0.0",
 		"react-dom": "^18.0.0",
 		"react-scripts": "5.0.0",
 		"styled-components": "^5.3.5",
-		"typescript": "^4.4.2",
 		"web-vitals": "^2.1.0"
 	},
 	"scripts": {
@@ -43,5 +36,12 @@
 			"last 1 firefox version",
 			"last 1 safari version"
 		]
+	},
+	"devDependencies": {
+		"@types/google.maps": "^3.48.5",
+		"@types/node": "^16.7.13",
+		"@types/react": "^17.0.20",
+		"@types/react-dom": "^17.0.9",
+		"typescript": "^4.4.2"
 	}
 }
