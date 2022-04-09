@@ -19,7 +19,7 @@ import throttle from 'lodash/throttle';
 const SearchBarHeader = styled.div`
     display: flex;
     justify-content: center;
-    /* pointer-events: none; */
+    pointer-events: none;
     position: relative;
     z-index: 100;
 `;
@@ -32,19 +32,18 @@ const SearchBarDiv = styled.div`
     background-color: #ffffff;
     box-shadow: 0 2px 4px rgb(0 0 0 / 20%), 0 -1px 0px rgb(0 0 0 / 2%);
     border-radius: 0.5rem;
-    /* position: absolute; */
-
     /* @media only screen and (min-width: 0) {
-    width: 100vw;
-    }
-    @media only screen and (min-width: ${DEFAULT_ALL_THEMES.breakpoints.sm}) {
-        width: 75vw;
-    }
-    @media only screen and (min-width: ${DEFAULT_ALL_THEMES.breakpoints.md}) {
-        width: 50vw;
-    }
-    width: 50vw; */
-    z-index: 1000;
+            width: 95vw;
+        } */
+    /*
+  @media only screen and (min-width: ${DEFAULT_ALL_THEMES.breakpoints.sm}) {
+    width: 75vw;
+  }
+  @media only screen and (min-width: ${DEFAULT_ALL_THEMES.breakpoints.md}) {
+    width: 50vw;
+  }
+  width: 50vw; */
+    /* z-index: 200; */
     transition: all 0.5s ease-in-out;
     pointer-events: visible;
 `;
@@ -68,9 +67,7 @@ interface PlaceType {
 }
 
 export default function GoogleMaps() {
-    const [placesService, setPlacesService] = useState<
-        google.maps.places.AutocompleteService | undefined
-    >(undefined);
+    const placesService = new window.google.maps.places.AutocompleteService();
 
     const [value, setValue] = useState<PlaceType | null>(null);
     const [inputValue, setInputValue] = useState('');
@@ -78,30 +75,26 @@ export default function GoogleMaps() {
 
     const fetchSuggestions = useMemo(() => {
         return throttle(
-            (request: { input: string }, callback: (results?: any) => void) => {
-                console.log({ request });
-                return placesService?.getPlacePredictions(request, callback);
+            async (
+                request: { input: string },
+                callback: (results?: any) => void
+            ) => {
+                console.log(placesService);
+                return await placesService?.getPlacePredictions(
+                    request,
+                    callback
+                );
             },
             200
         );
-    }, [placesService]);
-
-    useEffect(() => {
-        if (!placesService) {
-            setPlacesService(
-                new window.google.maps.places.AutocompleteService()
-            );
-        }
-    }, [placesService, setPlacesService]);
+    }, []);
 
     useEffect(() => {
         let active = true;
 
-        if (placesService) return;
-
         if (inputValue === '') {
             setOptions(value ? [value] : []);
-            return undefined;
+            return;
         }
 
         fetchSuggestions(
@@ -126,13 +119,13 @@ export default function GoogleMaps() {
         return () => {
             active = false;
         };
-    }, [value, inputValue, fetchSuggestions, placesService]);
+    }, [value, inputValue, fetchSuggestions]);
 
     return (
         <SearchBarHeader>
             <Autocomplete
                 id="google"
-                sx={{ width: 300 }}
+                sx={{ width: 500 }}
                 getOptionLabel={(option) =>
                     typeof option === 'string' ? option : option.description
                 }
@@ -143,24 +136,22 @@ export default function GoogleMaps() {
                 filterSelectedOptions
                 value={value}
                 onChange={(event: any, newValue: PlaceType | null) => {
-                    console.log({ newValue });
                     setOptions(newValue ? [newValue, ...options] : options);
                     setValue(newValue);
                 }}
                 onInputChange={(event, newInputValue) => {
-                    console.log({ newInputValue });
                     setInputValue(newInputValue);
                 }}
                 renderInput={(params) => {
                     return (
-                        <SearchBarDiv ref={params.InputProps.ref}>
+                        <SearchBarDiv>
                             <Paper
                                 component="form"
                                 sx={{
                                     p: '2px 4px',
                                     display: 'flex',
+                                    width: '100%',
                                     alignItems: 'center',
-                                    width: 400,
                                 }}
                             >
                                 <IconButton
@@ -170,12 +161,10 @@ export default function GoogleMaps() {
                                     <MenuIcon />
                                 </IconButton>
                                 <InputBase
-                                    {...params}
-                                    sx={{ ml: 1, flex: 1 }}
                                     placeholder="Search"
-                                    // inputProps={{
-                                    //     'aria-label': 'search google maps',
-                                    // }}
+                                    sx={{ ml: 1, flex: 2 }}
+                                    ref={params.InputProps.ref}
+                                    inputProps={params.inputProps}
                                 />
                                 <IconButton
                                     type="submit"
