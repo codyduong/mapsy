@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Status } from '@googlemaps/react-wrapper';
-import { CircularProgress } from '@mui/material';
 import { transformGoogleBounds, transformLatLngToPoint } from './map.util';
 import api, { Camera } from '../../api';
 import { CurrentWindow } from './map.currentWindow';
@@ -32,22 +30,6 @@ const LoadingWrapper = styled.div`
   align-content: center;
 `;
 
-const render = (status: Status): JSX.Element => {
-  if (status === Status.LOADING)
-    return (
-      <LoadingWrapper>
-        <CircularProgress />
-      </LoadingWrapper>
-    );
-  if (status === Status.FAILURE)
-    return (
-      <LoadingWrapper>
-        <CircularProgress />
-      </LoadingWrapper>
-    );
-  return <></>;
-};
-
 interface GoogleMapsProps {
   currentWindow: null | JSX.Element;
   setCurrentWindow: React.Dispatch<React.SetStateAction<null | JSX.Element>>;
@@ -56,13 +38,25 @@ interface GoogleMapsProps {
 }
 
 export function GoogleMap(props: GoogleMapsProps) {
-  const {currentWindow: _, setCurrentWindow, map, setMap} = props;
+  const { setCurrentWindow, map, setMap } = props;
 
   const queryParams = new URLSearchParams(window.location.search);
 
-  const {lng: p_lng, lat: p_lat, zoom: p_zoom} = {lng: queryParams.get('lng'), lat: queryParams.get('lat'), zoom: queryParams.get('zoom')};
-  const center = { lng: p_lng ? Number(p_lng) : 38.957799, lat: p_lat ? Number(p_lat) : -95.254341 };
-  const zoom = p_zoom ? Number(p_zoom) : 8;
+  const {
+    lng: lngProp,
+    lat: latProp,
+    zoom: zoomProp,
+  } = {
+    lng: queryParams.get('lng'),
+    lat: queryParams.get('lat'),
+    zoom: queryParams.get('zoom'),
+  };
+
+  const center = {
+    lng: lngProp ? Number(lngProp) : -95.2510135,
+    lat: latProp ? Number(latProp) : 38.961156294983,
+  };
+  const zoom = zoomProp ? Number(zoomProp) : 13;
 
   const ref = useRef<HTMLDivElement>(null);
     
@@ -71,21 +65,12 @@ export function GoogleMap(props: GoogleMapsProps) {
         Record<string, [google.maps.Marker, Camera]>
     >({});
 
-  // navigator.geolocation.getCurrentPosition(
-  //     (position: GeolocationPosition) => {
-  //         pos = {
-  //             lat: position.coords.latitude,
-  //             lng: position.coords.longitude,
-  //         };
-  //     }
-  // );
-
   useEffect(() => {
     if (ref.current && !map) {
       setMap(
         new window.google.maps.Map(ref.current, {
-          center: { lng: 38.957099, lat: -95.254776 },
-          zoom: 6,
+          center,
+          zoom,
           disableDefaultUI: true,
           restriction: {
             latLngBounds: LAWRENCE_BOUNDS,
@@ -131,7 +116,7 @@ export function GoogleMap(props: GoogleMapsProps) {
               title: camera.label,
               icon: {
                 url: require('./camera.png'), // url
-                scaledSize: new google.maps.Size(32, 32), // scaled size
+                scaledSize: new google.maps.Size(24, 24), // scaled size
                 anchor: new google.maps.Point(16, 16),
               },
               collisionBehavior: 'REQUIRED_AND_HIDES_OPTIONAL',
