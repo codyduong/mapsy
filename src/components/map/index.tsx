@@ -3,4 +3,4 @@ import type { Bounds as b } from './map.util';
 
 export default map;
 
-export type Bounds = b
+export type Bounds = b;

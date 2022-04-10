@@ -82,7 +82,7 @@ const SignInGoogleWrapper = styled.div`
 
 // const GoogleIconWrapper = styled.div`
 //   display: flex;
-  
+
 // `;
 
 const LoginImageWrapper = styled.div`
@@ -100,105 +100,176 @@ const LoginImage = styled.img`
 `;
 
 const WelcomeText = styled.div`
-  font-size:1.5rem;
+  font-size: 1.5rem;
   font-family: Roboto;
   color: #b4b4b4;
   text-align: center;
   margin: 0 auto;
 `;
 
-const clickSignInWithEmail = async (email: string, password: string, setAccountModalVisible: React.Dispatch<React.SetStateAction<boolean>>) => {
-    await Firebase.auth()?.signInWithEmailAndPassword(email, password);
-    setAccountModalVisible(false);
+const clickSignInWithEmail = async (
+  email: string,
+  password: string,
+  setAccountModalVisible: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  await Firebase.auth()?.signInWithEmailAndPassword(email, password);
+  setAccountModalVisible(false);
 };
 
-
-const clickRegisterWithEmail = async (email: string, password: string, setAccountModalVisible: React.Dispatch<React.SetStateAction<boolean>>) => {
-    await Firebase.auth()?.createUserWithEmailAndPassword(email, password);
-    setAccountModalVisible(false);
+const clickRegisterWithEmail = async (
+  email: string,
+  password: string,
+  setAccountModalVisible: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  await Firebase.auth()?.createUserWithEmailAndPassword(email, password);
+  setAccountModalVisible(false);
 };
-
 
 interface AppLoginProps {
-  setAccountModalVisible: React.Dispatch<React.SetStateAction<boolean>>
+  setAccountModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AppLogin = (props: AppLoginProps) => {
-    const {setAccountModalVisible} = props;
-    const auth = getAuth();
-    const provider = new GoogleAuthProvider();
+  const { setAccountModalVisible } = props;
+  const auth = getAuth();
+  const provider = new GoogleAuthProvider();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-    const clickGoogleSignIn = () => {
-        signInWithPopup(auth, provider)
-            .then((result: any) => {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                const credential = GoogleAuthProvider.credentialFromResult(result);
-                const token = credential?.accessToken;
-                // The signed-in user info.
-                const user = result.user;
-                console.log(user);
-          
-                // ...
-            }).catch((error) => {
-                // Handle Errors here.
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // The email of the user's account used.
-                const email = error.email;
-                // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error);
-                alert(`Something blew up, reporting with ${[errorCode, errorMessage, email, credential]}`);
-            }).finally(() => {
+  const clickGoogleSignIn = () => {
+    signInWithPopup(auth, provider)
+      .then((result: any) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential?.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        console.log(user);
+
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        alert(
+          `Something blew up, reporting with ${[
+            errorCode,
+            errorMessage,
+            email,
+            credential,
+          ]}`
+        );
+      })
+      .finally(() => {
+        setAccountModalVisible(false);
+      });
+  };
+
+  const handleAuth = () => {
+    if (auth.currentUser) {
+      const cU = auth.currentUser;
+      return (
+        <>
+          <LoginImageWrapper>
+            <LoginImage src={cU.photoURL ?? ''} />
+          </LoginImageWrapper>
+          <WelcomeText>Welcome, {`${cU.displayName}`}</WelcomeText>
+          <SignInGoogleWrapper>
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={() => {
+                Firebase.auth().signOut();
                 setAccountModalVisible(false);
-            });
-    };
+              }}
+            >
+              Sign Out
+            </Button>
+          </SignInGoogleWrapper>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <TextFieldWrapper>
+            <TextField
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              fullWidth
+              label="Email / Username"
+            />
+          </TextFieldWrapper>
+          <TextFieldWrapper>
+            <TextField
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              type="password"
+              autoComplete="current-password"
+              fullWidth
+              label="Password"
+            />
+          </TextFieldWrapper>
+          <SignInRow>
+            <SignInText>Forgot your email/password?</SignInText>
+            <Button
+              variant="contained"
+              onClick={() => {
+                clickRegisterWithEmail(email, password, setAccountModalVisible);
+              }}
+            >
+              Register
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                clickSignInWithEmail(email, password, setAccountModalVisible);
+              }}
+            >
+              Sign In
+            </Button>
+          </SignInRow>
+          <FakeLinebreakWrapper>
+            <FakeLine />
+            OR SIGN IN WITH
+            <FakeLine />
+          </FakeLinebreakWrapper>
+          <SignInGoogleWrapper>
+            <Button
+              variant="contained"
+              startIcon={<Google />}
+              fullWidth
+              onClick={() => {
+                clickGoogleSignIn();
+              }}
+            >
+              Google
+            </Button>
+          </SignInGoogleWrapper>
+        </>
+      );
+    }
+  };
 
-    const handleAuth = () => {
-        if (auth.currentUser) {
-            const cU = auth.currentUser;
-            return (<>
-                <LoginImageWrapper><LoginImage src={cU.photoURL ?? ''}/></LoginImageWrapper>
-                <WelcomeText>Welcome, {`${cU.displayName}`}</WelcomeText>
-                <SignInGoogleWrapper><Button variant="contained" fullWidth onClick={() => {
-                    Firebase.auth().signOut();
-                    setAccountModalVisible(false);
-                }}>Sign Out</Button ></SignInGoogleWrapper>
-            </>);
-        } else {
-            return (<>
-                <TextFieldWrapper><TextField value={email} onChange={(e) => {setEmail(e.target.value);}} 
-                    fullWidth label="Email / Username"/></TextFieldWrapper>
-                <TextFieldWrapper><TextField value={password} onChange={(e) => {setPassword(e.target.value);}} 
-                    type="password" autoComplete="current-password"fullWidth label="Password"/></TextFieldWrapper>
-                <SignInRow>
-                    <SignInText>Forgot your email/password?</SignInText>
-                    <Button variant="contained" onClick={() => {
-                        clickRegisterWithEmail(email, password, setAccountModalVisible); 
-                    }}>Register</Button>
-                    <Button variant="contained" onClick={() => {
-                        clickSignInWithEmail(email, password, setAccountModalVisible); 
-                    }}>Sign In</Button>
-                </SignInRow>
-                <FakeLinebreakWrapper><FakeLine/>OR SIGN IN WITH<FakeLine/></FakeLinebreakWrapper>
-                <SignInGoogleWrapper><Button variant="contained" startIcon={<Google />} fullWidth onClick={() => {
-                    clickGoogleSignIn();
-                }}>Google</Button >
-                </SignInGoogleWrapper>
-            </>);
-        }
-    };
-
-    return (
-        <AppLoginModal>
-            <AppLoginOffClickDiv onClick={() => {setAccountModalVisible(false);}}/>
-            <AppLoginDiv>
-                {handleAuth()}
-            </AppLoginDiv>
-        </AppLoginModal>
-    );
+  return (
+    <AppLoginModal>
+      <AppLoginOffClickDiv
+        onClick={() => {
+          setAccountModalVisible(false);
+        }}
+      />
+      <AppLoginDiv>{handleAuth()}</AppLoginDiv>
+    </AppLoginModal>
+  );
 };
 
 export default AppLogin;
