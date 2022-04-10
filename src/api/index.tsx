@@ -19,6 +19,35 @@ export type Camera = {
   lng: number; //+ is East,, - is West
 };
 
+export type DetectedObject = {
+    mid: string,
+    languageCode: string,
+    name: string,
+    score: string, //Confidence 0 to 1 float
+    boundingPoly: {
+      vertices: unknown[],
+      normalizedVertices: [
+        {
+            x: number,
+            y: number,
+        },
+        {
+            x: number,
+            y: number,
+        },
+        {
+            x: number,
+            y: number,
+        },
+        {
+            x: number,
+            y: number,
+        }
+      ]
+    }
+  }
+
+
 const api = {
   getCamerasInBounds: async (bounds: Bounds) => {
     const db = Firebase.firestore();
@@ -59,8 +88,15 @@ const api = {
       if (associate_array_lng[key]) {
         values.push(value);
       }
+      
     }
     return values as Camera[];
+
+    
+  },
+  // This calls a cloud-function which uses image detection
+  detectObjects: async (url: string): Promise<DetectedObject[]> => {
+    return (await fetch('https://us-central1-hackku-2022.cloudfunctions.net/detect_objects', {method: 'POST', body: JSON.stringify({'url': url})})).json();
   },
   getWeather: async (latNLng: LatNLng) => {
     const url = `https://api.weather.gov/points/${latNLng.lat},${latNLng.lng}`;
