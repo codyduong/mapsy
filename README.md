@@ -14,13 +14,17 @@
 [![Issues][issues-shield]][issues-url]
 
 
-
 <!-- PROJECT LOGO -->
-
-<h3 align="center">Mapsy</h3>
+<br />
+<div align="center">
+  <a href="https://github.com/codyduong/HackKU2022">
+    <img src="https://media.discordapp.net/attachments/962428918206459924/962542551972339762/TH5Mgm-t.png?width=1328&height=972" alt="Logo" width="80" height="80">
+  </a>
 
   <p align="center">
     Analyzing images from CCTV to determine road status
+    <br />
+    <a href="https://github.com/codyduong/HackKU2022"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/codyduong/HackKU2022">View Demo</a>
@@ -62,7 +66,10 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+
 Mapsy is an interactive web app that analyzes CCTV imagery and weather data to determine realtime road conditions in Lawrence, KS.
+
+![https://images-ext-1.discordapp.net/external/1PF9Sg05omrRK1BQZvpFmxN98gngFbTb0wWgaHRC2D8/https/i.umai.pw/ZvmtHP.jpg?width=1736&height=815](https://images-ext-1.discordapp.net/external/1PF9Sg05omrRK1BQZvpFmxN98gngFbTb0wWgaHRC2D8/https/i.umai.pw/ZvmtHP.jpg?width=1736&height=815)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
