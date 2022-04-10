@@ -57,21 +57,30 @@ export function GoogleMap(props: GoogleMapsProps) {
     const ref = useRef<HTMLDivElement>(null);
     
     const [isFetching, setIsFetching] = useState(false);
-    const [cameraMarkerAssociative, setCameraMarkerAssociative] = useState<Record<string, [google.maps.Marker, Camera]>>({});
-    
+    const [cameraMarkerAssociative, setCameraMarkerAssociative] = useState<
+        Record<string, [google.maps.Marker, Camera]>
+    >({});
+
+    // navigator.geolocation.getCurrentPosition(
+    //     (position: GeolocationPosition) => {
+    //         pos = {
+    //             lat: position.coords.latitude,
+    //             lng: position.coords.longitude,
+    //         };
+    //     }
+    // );
 
     useEffect(() => {
         if (ref.current && !map) {
             setMap(
                 new window.google.maps.Map(ref.current, {
-                    center,
-                    zoom,
-                    mapTypeControl: false,
+                    center: { lng: 38.957099, lat: -95.254776 },
+                    zoom: 6,
+                    disableDefaultUI: true,
                     restriction: {
                         latLngBounds: LAWRENCE_BOUNDS,
                         strictBounds: false,
                     },
-                    streetViewControlOptions: null,
                 })
             );
         }
@@ -89,37 +98,56 @@ export function GoogleMap(props: GoogleMapsProps) {
             // bounds_changed is called too often, instead use idle
             map.addListener('idle', async () => {
                 const bounds = map.getBounds();
+
                 const center = bounds?.getCenter();
                 window.history.pushState({}, '', `/?lat=${center?.lat()}&lng=${center?.lng()}&zoom=${map.getZoom()}`);
                 const transformedBounds = transformGoogleBounds(map.getBounds());
+
                 if (!isFetching) {
                     setIsFetching(true);
-                    const boundedCameras = await api.getCamerasInBounds(transformedBounds);
-                    const camMarkers: Record<string, [google.maps.Marker, Camera]> = {};
+                    const boundedCameras = await api.getCamerasInBounds(
+                        transformedBounds
+                    );
+                    const camMarkers: Record<
+                        string,
+                        [google.maps.Marker, Camera]
+                    > = {};
                     for (const camera of boundedCameras) {
                         const marker = new google.maps.Marker({
-                            position: new google.maps.LatLng(camera.lat, camera.lng),
+                            position: new google.maps.LatLng(
+                                camera.lat,
+                                camera.lng
+                            ),
                             title: camera.label,
                             icon: {
                                 url: require('./camera.png'), // url
                                 scaledSize: new google.maps.Size(32, 32), // scaled size
-                                anchor: new google.maps.Point(16, 16)
+                                anchor: new google.maps.Point(16, 16),
                             },
-                            collisionBehavior: 'REQUIRED_AND_HIDES_OPTIONAL'
+                            collisionBehavior: 'REQUIRED_AND_HIDES_OPTIONAL',
                         });
                         camMarkers[camera.label] = [marker, camera];
                     }
-                    const merged = {...camMarkers, ...cameraMarkerAssociative};
+                    const merged = {
+                        ...camMarkers,
+                        ...cameraMarkerAssociative,
+                    };
                     Object.values(merged).forEach(([marker, camera]) => {
                         map && marker.setMap(map);
                         marker.addListener('click', () => {
-                            const point = transformLatLngToPoint(new google.maps.LatLng(marker.getPosition()!), map);
+                            const point = transformLatLngToPoint(
+                                new google.maps.LatLng(marker.getPosition()!),
+                                map
+                            );
                             setCurrentWindow(
-                                <CurrentWindow 
+                                <CurrentWindow
                                     x={point.x}
                                     y={point.y}
                                     label={marker.getTitle()!}
                                     url={camera.image}
+                                    unmountSelf={() => {
+                                        setCurrentWindow(null);
+                                    }}
                                 />
                             );
                         });

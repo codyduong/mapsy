@@ -11,6 +11,9 @@ const AppWrapper = styled.div`
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
 `;
 
 const LoadingWrapper = styled.div`
@@ -18,9 +21,8 @@ const LoadingWrapper = styled.div`
     right: 0;
     top: 0;
     bottom: 0;
-    position: absolute;
     display: flex;
-    justify-content: center;
+    align-items: center;
     align-content: center;
 `;
 
