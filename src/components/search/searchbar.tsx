@@ -66,7 +66,12 @@ interface PlaceType {
     structured_formatting: StructuredFormatting;
 }
 
-export default function GoogleMaps() {
+interface GoogleMapsProps {
+    setAccountModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function GoogleMaps(props: GoogleMapsProps) {
+    const {setAccountModalVisible} = props;
     const placesService = new window.google.maps.places.AutocompleteService();
 
     const [value, setValue] = useState<PlaceType | null>(null);
@@ -181,6 +186,9 @@ export default function GoogleMaps() {
                                     color="primary"
                                     sx={{ p: '10px' }}
                                     aria-label="directions"
+                                    onClick={() => {
+                                        setAccountModalVisible(true);
+                                    }}
                                 >
                                     <PersonIcon />
                                 </IconButton>

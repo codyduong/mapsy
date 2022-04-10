@@ -139,6 +139,6 @@ export default function GoogleMapWrapper() {
 
     return <>
         {currentWindow}
-        <GoogleMap currentWindow={currentWindow} setCurrentWindow={setCurrentWindow}/>;
+        <GoogleMap currentWindow={currentWindow} setCurrentWindow={setCurrentWindow}/>
     </>;
 }
