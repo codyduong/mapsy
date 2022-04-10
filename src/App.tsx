@@ -4,6 +4,8 @@ import GoogleMap from './components/map';
 import SearchBar from './components/search';
 import { CircularProgress } from '@mui/material';
 import { Status, Wrapper } from '@googlemaps/react-wrapper';
+import { useState } from 'react'; 
+import AppLogin from './components/App.login';
 
 const AppWrapper = styled.div`
     width: 100vw;
@@ -41,6 +43,9 @@ const render = (status: Status): JSX.Element => {
 };
 
 function App() {
+    const [accountModalVisible, setAccountModalVisible] = useState(false);
+    const [map, setMap] = useState<google.maps.Map | null>(null);
+
     return (
         <ThemeProvider>
             <AppWrapper>
@@ -49,8 +54,9 @@ function App() {
                     render={render}
                     libraries={['places']}
                 >
-                    <SearchBar />
-                    <GoogleMap />
+                    {accountModalVisible && <AppLogin setAccountModalVisible={setAccountModalVisible}/>}
+                    <SearchBar setAccountModalVisible={setAccountModalVisible} map={map} setMap={setMap}/>
+                    <GoogleMap map={map} setMap={setMap} />
                 </Wrapper>
             </AppWrapper>
         </ThemeProvider>
