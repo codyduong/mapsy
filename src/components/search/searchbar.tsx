@@ -52,26 +52,25 @@ const SearchBarIcon = styled.div`
     aspect-ratio: 1;
 `;
 
+const ListStyled = styled.li`
+    z-index: 50;
+`;
+
 interface MainTextMatchedSubstrings {
     offset: number;
     length: number;
 }
-interface StructuredFormatting {
-    main_text: string;
-    secondary_text: string;
-    main_text_matched_substrings: readonly MainTextMatchedSubstrings[];
-}
-interface PlaceType {
-    description: string;
-    structured_formatting: StructuredFormatting;
-}
+
+type PlaceType = google.maps.places.AutocompletePrediction
 
 interface GoogleMapsProps {
+    map: google.maps.Map | null;
+    setMap: React.Dispatch<React.SetStateAction<google.maps.Map | null>>;
     setAccountModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function GoogleMaps(props: GoogleMapsProps) {
-    const {setAccountModalVisible} = props;
+    const {map, setAccountModalVisible} = props;
     const placesService = new window.google.maps.places.AutocompleteService();
 
     const [value, setValue] = useState<PlaceType | null>(null);
@@ -172,9 +171,19 @@ export default function GoogleMaps(props: GoogleMapsProps) {
                                     inputProps={params.inputProps}
                                 />
                                 <IconButton
-                                    type="submit"
+                                    // type="submit"
                                     sx={{ p: '10px' }}
                                     aria-label="search"
+                                    onClick={async () => {
+                                        if (value && map) {
+                                            const geocoder = new google.maps.Geocoder();
+                                            geocoder.geocode({ placeId: value.place_id }).then(({ results }) => {
+                                                map.setZoom(18);
+                                                map.setCenter(results[0].geometry.location);
+                                                console.log(results);
+                                            });
+                                        }
+                                    }}
                                 >
                                     <SearchIcon />
                                 </IconButton>
@@ -210,7 +219,7 @@ export default function GoogleMaps(props: GoogleMapsProps) {
                     );
 
                     return (
-                        <li {...props}>
+                        <ListStyled {...props}>
                             <Grid container alignItems="center">
                                 <Grid item>
                                     <Box
@@ -242,7 +251,7 @@ export default function GoogleMaps(props: GoogleMapsProps) {
                                     </Typography>
                                 </Grid>
                             </Grid>
-                        </li>
+                        </ListStyled>
                     );
                 }}
             />

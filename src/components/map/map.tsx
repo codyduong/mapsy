@@ -32,9 +32,6 @@ const LoadingWrapper = styled.div`
     align-content: center;
 `;
 
-const center = { lng: 38.957799, lat: -95.254341 };
-const zoom = 8;
-
 const render = (status: Status): JSX.Element => {
     if (status === Status.LOADING) return <LoadingWrapper><CircularProgress /></LoadingWrapper>;
     if (status === Status.FAILURE) return <LoadingWrapper><CircularProgress /></LoadingWrapper>;
@@ -42,15 +39,23 @@ const render = (status: Status): JSX.Element => {
 };
 
 interface GoogleMapsProps {
-    currentWindow: null | JSX.Element,
-    setCurrentWindow: React.Dispatch<React.SetStateAction<null | JSX.Element>>
+    currentWindow: null | JSX.Element;
+    setCurrentWindow: React.Dispatch<React.SetStateAction<null | JSX.Element>>;
+    map: google.maps.Map | null;
+    setMap: React.Dispatch<React.SetStateAction<google.maps.Map | null>>;
 }
 
 export function GoogleMap(props: GoogleMapsProps) {
-    const {currentWindow, setCurrentWindow} = props;
+    const {currentWindow: _, setCurrentWindow, map, setMap} = props;
+
+    const queryParams = new URLSearchParams(window.location.search);
+
+    const {lng: p_lng, lat: p_lat, zoom: p_zoom} = {lng: queryParams.get('lng'), lat: queryParams.get('lat'), zoom: queryParams.get('zoom')};
+    const center = { lng: p_lng ? Number(p_lng) : 38.957799, lat: p_lat ? Number(p_lat) : -95.254341 };
+    const zoom = p_zoom ? Number(p_zoom) : 8;
 
     const ref = useRef<HTMLDivElement>(null);
-    const [map, setMap] = useState<google.maps.Map>();
+    
     const [isFetching, setIsFetching] = useState(false);
     const [cameraMarkerAssociative, setCameraMarkerAssociative] = useState<Record<string, [google.maps.Marker, Camera]>>({});
     
@@ -84,7 +89,8 @@ export function GoogleMap(props: GoogleMapsProps) {
             // bounds_changed is called too often, instead use idle
             map.addListener('idle', async () => {
                 const bounds = map.getBounds();
-                
+                const center = bounds?.getCenter();
+                window.history.pushState({}, '', `/?lat=${center?.lat()}&lng=${center?.lng()}&zoom=${map.getZoom()}`);
                 const transformedBounds = transformGoogleBounds(map.getBounds());
                 if (!isFetching) {
                     setIsFetching(true);
@@ -121,24 +127,27 @@ export function GoogleMap(props: GoogleMapsProps) {
                     setCameraMarkerAssociative(merged);
                     setIsFetching(false);
                 }
-                
             });
         }
     }, [map, isFetching, cameraMarkerAssociative, setCurrentWindow]);
 
     return (
         <WrapperDiv>
-            
             <div ref={ref} id="map" />
         </WrapperDiv>
     );
 }
 
-export default function GoogleMapWrapper() {
+interface GoogleMapWrapperProps {
+    map: google.maps.Map | null;
+    setMap: React.Dispatch<React.SetStateAction<google.maps.Map | null>>;
+}
+
+export default function GoogleMapWrapper(props: GoogleMapWrapperProps) {
     const [currentWindow, setCurrentWindow] = useState<JSX.Element | null>(null);
 
     return <>
         {currentWindow}
-        <GoogleMap currentWindow={currentWindow} setCurrentWindow={setCurrentWindow}/>
+        <GoogleMap currentWindow={currentWindow} setCurrentWindow={setCurrentWindow} {...props} />;
     </>;
 }

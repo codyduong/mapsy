@@ -42,6 +42,7 @@ const render = (status: Status): JSX.Element => {
 
 function App() {
     const [accountModalVisible, setAccountModalVisible] = useState(false);
+    const [map, setMap] = useState<google.maps.Map | null>(null);
 
     return (
         <ThemeProvider>
@@ -52,8 +53,8 @@ function App() {
                     libraries={['places']}
                 >
                     {accountModalVisible && <AppLogin setAccountModalVisible={setAccountModalVisible}/>}
-                    <SearchBar setAccountModalVisible={setAccountModalVisible}/>
-                    <GoogleMap />
+                    <SearchBar setAccountModalVisible={setAccountModalVisible} map={map} setMap={setMap}/>
+                    <GoogleMap map={map} setMap={setMap} />
                 </Wrapper>
             </AppWrapper>
         </ThemeProvider>
