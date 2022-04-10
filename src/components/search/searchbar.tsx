@@ -167,7 +167,7 @@ export default function GoogleMaps() {
                                     inputProps={params.inputProps}
                                 />
                                 <IconButton
-                                    type="submit"
+                                    // type="submit"
                                     sx={{ p: '10px' }}
                                     aria-label="search"
                                 >
