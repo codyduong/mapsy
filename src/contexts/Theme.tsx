@@ -1,24 +1,24 @@
 import React, { useState, createContext, useContext } from 'react';
 
 export interface Theme {
-    bgDark: string;
-    bg: string;
-    bgHighlight: string;
-    contentSecondary: string;
-    base: string;
-    contentPrimary: string;
-    contentEmphasized: string;
-    fg: string;
-    fgHighlight: string;
-    yellow: string;
-    orange: string;
-    red: string;
-    magenta: string;
-    violet: string;
-    blue: string;
-    cyan: string;
-    green: string;
-    breakpoints: typeof DEFAULT_ALL_THEMES['breakpoints'];
+  bgDark: string;
+  bg: string;
+  bgHighlight: string;
+  contentSecondary: string;
+  base: string;
+  contentPrimary: string;
+  contentEmphasized: string;
+  fg: string;
+  fgHighlight: string;
+  yellow: string;
+  orange: string;
+  red: string;
+  magenta: string;
+  violet: string;
+  blue: string;
+  cyan: string;
+  green: string;
+  breakpoints: typeof DEFAULT_ALL_THEMES['breakpoints'];
 }
 
 export type ThemeTypes = 'SOLARIZED_DARK' | 'SOLARIZED_LIGHT';
@@ -41,8 +41,8 @@ export const DEFAULT_ALL_THEMES = {
     md: '768px',
     lg: '992px',
     xl: '1200px',
-    xxl: '1400px'
-  }
+    xxl: '1400px',
+  },
 };
 
 export const ThemeList: { [index in ThemeTypes]: Theme } = {
@@ -70,7 +70,7 @@ export const ThemeList: { [index in ThemeTypes]: Theme } = {
     bg: '#fdf6e3',
     bgDark: '#dbd5bf',
     ...SOLARIZED_COLORS,
-    ...DEFAULT_ALL_THEMES
+    ...DEFAULT_ALL_THEMES,
   },
 };
 

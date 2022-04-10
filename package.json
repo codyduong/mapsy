@@ -25,7 +25,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "ci": "yarn install --frozen-lockfile",
-    "lint": "yarn eslint src --fix"
+    "lint": "yarn eslint src helpers --fix"
   },
   "eslintConfig": {
     "extends": [

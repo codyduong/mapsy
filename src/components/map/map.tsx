@@ -14,52 +14,73 @@ const LAWRENCE_BOUNDS = {
 };
 
 const WrapperDiv = styled.div`
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    top: 0;
-    left: 0;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
 `;
 
 const LoadingWrapper = styled.div`
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-content: center;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-content: center;
 `;
 
 const render = (status: Status): JSX.Element => {
-  if (status === Status.LOADING) return <LoadingWrapper><CircularProgress /></LoadingWrapper>;
-  if (status === Status.FAILURE) return <LoadingWrapper><CircularProgress /></LoadingWrapper>;
+  if (status === Status.LOADING)
+    return (
+      <LoadingWrapper>
+        <CircularProgress />
+      </LoadingWrapper>
+    );
+  if (status === Status.FAILURE)
+    return (
+      <LoadingWrapper>
+        <CircularProgress />
+      </LoadingWrapper>
+    );
   return <></>;
 };
 
 interface GoogleMapsProps {
-    currentWindow: null | JSX.Element;
-    setCurrentWindow: React.Dispatch<React.SetStateAction<null | JSX.Element>>;
-    map: google.maps.Map | null;
-    setMap: React.Dispatch<React.SetStateAction<google.maps.Map | null>>;
+  currentWindow: null | JSX.Element;
+  setCurrentWindow: React.Dispatch<React.SetStateAction<null | JSX.Element>>;
+  map: google.maps.Map | null;
+  setMap: React.Dispatch<React.SetStateAction<google.maps.Map | null>>;
 }
 
 export function GoogleMap(props: GoogleMapsProps) {
-  const {currentWindow: _, setCurrentWindow, map, setMap} = props;
+  const { currentWindow: _, setCurrentWindow, map, setMap } = props;
 
   const queryParams = new URLSearchParams(window.location.search);
 
-  const {lng: p_lng, lat: p_lat, zoom: p_zoom} = {lng: queryParams.get('lng'), lat: queryParams.get('lat'), zoom: queryParams.get('zoom')};
-  const center = { lng: p_lng ? Number(p_lng) : 38.957799, lat: p_lat ? Number(p_lat) : -95.254341 };
+  const {
+    lng: p_lng,
+    lat: p_lat,
+    zoom: p_zoom,
+  } = {
+    lng: queryParams.get('lng'),
+    lat: queryParams.get('lat'),
+    zoom: queryParams.get('zoom'),
+  };
+  const center = {
+    lng: p_lng ? Number(p_lng) : 38.957799,
+    lat: p_lat ? Number(p_lat) : -95.254341,
+  };
   const zoom = p_zoom ? Number(p_zoom) : 8;
 
   const ref = useRef<HTMLDivElement>(null);
-    
+
   const [isFetching, setIsFetching] = useState(false);
   const [cameraMarkerAssociative, setCameraMarkerAssociative] = useState<
-        Record<string, [google.maps.Marker, Camera]>
-    >({});
+    Record<string, [google.maps.Marker, Camera]>
+  >({});
 
   // navigator.geolocation.getCurrentPosition(
   //     (position: GeolocationPosition) => {
@@ -100,7 +121,11 @@ export function GoogleMap(props: GoogleMapsProps) {
         const bounds = map.getBounds();
 
         const center = bounds?.getCenter();
-        window.history.pushState({}, '', `/?lat=${center?.lat()}&lng=${center?.lng()}&zoom=${map.getZoom()}`);
+        window.history.pushState(
+          {},
+          '',
+          `/?lat=${center?.lat()}&lng=${center?.lng()}&zoom=${map.getZoom()}`
+        );
         const transformedBounds = transformGoogleBounds(map.getBounds());
 
         if (!isFetching) {
@@ -108,16 +133,10 @@ export function GoogleMap(props: GoogleMapsProps) {
           const boundedCameras = await api.getCamerasInBounds(
             transformedBounds
           );
-          const camMarkers: Record<
-                        string,
-                        [google.maps.Marker, Camera]
-                    > = {};
+          const camMarkers: Record<string, [google.maps.Marker, Camera]> = {};
           for (const camera of boundedCameras) {
             const marker = new google.maps.Marker({
-              position: new google.maps.LatLng(
-                camera.lat,
-                camera.lng
-              ),
+              position: new google.maps.LatLng(camera.lat, camera.lng),
               title: camera.label,
               icon: {
                 url: require('./camera.png'), // url
@@ -167,15 +186,21 @@ export function GoogleMap(props: GoogleMapsProps) {
 }
 
 interface GoogleMapWrapperProps {
-    map: google.maps.Map | null;
-    setMap: React.Dispatch<React.SetStateAction<google.maps.Map | null>>;
+  map: google.maps.Map | null;
+  setMap: React.Dispatch<React.SetStateAction<google.maps.Map | null>>;
 }
 
 export default function GoogleMapWrapper(props: GoogleMapWrapperProps) {
   const [currentWindow, setCurrentWindow] = useState<JSX.Element | null>(null);
 
-  return <>
-    {currentWindow}
-    <GoogleMap currentWindow={currentWindow} setCurrentWindow={setCurrentWindow} {...props} />
-  </>;
+  return (
+    <>
+      {currentWindow}
+      <GoogleMap
+        currentWindow={currentWindow}
+        setCurrentWindow={setCurrentWindow}
+        {...props}
+      />
+    </>
+  );
 }

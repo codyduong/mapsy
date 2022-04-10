@@ -17,25 +17,25 @@ import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
 
 const SearchBarHeader = styled.div`
-    display: flex;
-    justify-content: center;
-    pointer-events: none;
-    position: relative;
-    z-index: 100;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  position: relative;
+  z-index: 100;
 `;
 
 const SearchBarDiv = styled.div`
-    display: flex;
-    min-height: 2rem;
-    margin-top: 10px;
-    padding: 0rem;
-    background-color: #ffffff;
-    box-shadow: 0 2px 4px rgb(0 0 0 / 20%), 0 -1px 0px rgb(0 0 0 / 2%);
-    border-radius: 0.5rem;
-    /* @media only screen and (min-width: 0) {
+  display: flex;
+  min-height: 2rem;
+  margin-top: 10px;
+  padding: 0rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 20%), 0 -1px 0px rgb(0 0 0 / 2%);
+  border-radius: 0.5rem;
+  /* @media only screen and (min-width: 0) {
             width: 95vw;
         } */
-    /*
+  /*
   @media only screen and (min-width: ${DEFAULT_ALL_THEMES.breakpoints.sm}) {
     width: 75vw;
   }
@@ -43,34 +43,34 @@ const SearchBarDiv = styled.div`
     width: 50vw;
   }
   width: 50vw; */
-    /* z-index: 200; */
-    transition: all 0.5s ease-in-out;
-    pointer-events: visible;
+  /* z-index: 200; */
+  transition: all 0.5s ease-in-out;
+  pointer-events: visible;
 `;
 
 const SearchBarIcon = styled.div`
-    aspect-ratio: 1;
+  aspect-ratio: 1;
 `;
 
 const ListStyled = styled.li`
-    z-index: 50;
+  z-index: 50;
 `;
 
 interface MainTextMatchedSubstrings {
-    offset: number;
-    length: number;
+  offset: number;
+  length: number;
 }
 
-type PlaceType = google.maps.places.AutocompletePrediction
+type PlaceType = google.maps.places.AutocompletePrediction;
 
 interface GoogleMapsProps {
-    map: google.maps.Map | null;
-    setMap: React.Dispatch<React.SetStateAction<google.maps.Map | null>>;
-    setAccountModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  map: google.maps.Map | null;
+  setMap: React.Dispatch<React.SetStateAction<google.maps.Map | null>>;
+  setAccountModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function GoogleMaps(props: GoogleMapsProps) {
-  const {map, setAccountModalVisible} = props;
+  const { map, setAccountModalVisible } = props;
   const placesService = new window.google.maps.places.AutocompleteService();
 
   const [value, setValue] = useState<PlaceType | null>(null);
@@ -79,15 +79,9 @@ export default function GoogleMaps(props: GoogleMapsProps) {
 
   const fetchSuggestions = useMemo(() => {
     return throttle(
-      async (
-        request: { input: string },
-        callback: (results?: any) => void
-      ) => {
+      async (request: { input: string }, callback: (results?: any) => void) => {
         console.log(placesService);
-        return await placesService?.getPlacePredictions(
-          request,
-          callback
-        );
+        return await placesService?.getPlacePredictions(request, callback);
       },
       200
     );
@@ -158,10 +152,7 @@ export default function GoogleMaps(props: GoogleMapsProps) {
                   alignItems: 'center',
                 }}
               >
-                <IconButton
-                  sx={{ p: '10px' }}
-                  aria-label="menu"
-                >
+                <IconButton sx={{ p: '10px' }} aria-label="menu">
                   <MenuIcon />
                 </IconButton>
                 <InputBase
@@ -177,20 +168,19 @@ export default function GoogleMaps(props: GoogleMapsProps) {
                   onClick={async () => {
                     if (value && map) {
                       const geocoder = new google.maps.Geocoder();
-                      geocoder.geocode({ placeId: value.place_id }).then(({ results }) => {
-                        map.setZoom(18);
-                        map.setCenter(results[0].geometry.location);
-                        console.log(results);
-                      });
+                      geocoder
+                        .geocode({ placeId: value.place_id })
+                        .then(({ results }) => {
+                          map.setZoom(18);
+                          map.setCenter(results[0].geometry.location);
+                          console.log(results);
+                        });
                     }
                   }}
                 >
                   <SearchIcon />
                 </IconButton>
-                <Divider
-                  sx={{ height: 28, m: 0.5 }}
-                  orientation="vertical"
-                />
+                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
                 <IconButton
                   color="primary"
                   sx={{ p: '10px' }}
@@ -208,8 +198,7 @@ export default function GoogleMaps(props: GoogleMapsProps) {
         }}
         renderOption={(props, option) => {
           const matches =
-                        option.structured_formatting
-                          .main_text_matched_substrings;
+            option.structured_formatting.main_text_matched_substrings;
           const parts = parse(
             option.structured_formatting.main_text,
             matches.map((match: any) => [
@@ -232,22 +221,14 @@ export default function GoogleMaps(props: GoogleMapsProps) {
                     <span
                       key={index}
                       style={{
-                        fontWeight: part.highlight
-                          ? 700
-                          : 400,
+                        fontWeight: part.highlight ? 700 : 400,
                       }}
                     >
                       {part.text}
                     </span>
                   ))}
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                  >
-                    {
-                      option.structured_formatting
-                        .secondary_text
-                    }
+                  <Typography variant="body2" color="text.secondary">
+                    {option.structured_formatting.secondary_text}
                   </Typography>
                 </Grid>
               </Grid>

@@ -1,22 +1,22 @@
 export type GooglePlacesAutocompleteHandle = {
-    getSessionToken: () =>
-        | google.maps.places.AutocompleteSessionToken
-        | undefined;
-    refreshSessionToken: () => void;
+  getSessionToken: () =>
+    | google.maps.places.AutocompleteSessionToken
+    | undefined;
+  refreshSessionToken: () => void;
 };
 
 export interface LatLng {
-    lat: number;
-    lng: number;
+  lat: number;
+  lng: number;
 }
 
 export interface AutocompletionRequest {
-    bounds?: [LatLng, LatLng];
-    componentRestrictions?: { country: string | string[] };
-    location?: LatLng;
-    offset?: number;
-    radius?: number;
-    types?: string[];
+  bounds?: [LatLng, LatLng];
+  componentRestrictions?: { country: string | string[] };
+  location?: LatLng;
+  offset?: number;
+  radius?: number;
+  types?: string[];
 }
 
 export default function autoCompleteReqBuilder(
