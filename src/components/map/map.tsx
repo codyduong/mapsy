@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Status } from '@googlemaps/react-wrapper';
-import { CircularProgress } from '@mui/material';
 import { transformGoogleBounds, transformLatLngToPoint } from './map.util';
 import api, { Camera } from '../../api';
 import { CurrentWindow } from './map.currentWindow';
@@ -61,11 +59,11 @@ export function GoogleMap(props: GoogleMapsProps) {
   const zoom = zoomProp ? Number(zoomProp) : 13;
 
   const ref = useRef<HTMLDivElement>(null);
-
+    
   const [isFetching, setIsFetching] = useState(false);
   const [cameraMarkerAssociative, setCameraMarkerAssociative] = useState<
-    Record<string, [google.maps.Marker, Camera]>
-  >({});
+        Record<string, [google.maps.Marker, Camera]>
+    >({});
 
   useEffect(() => {
     if (ref.current && !map) {
@@ -97,11 +95,7 @@ export function GoogleMap(props: GoogleMapsProps) {
         const bounds = map.getBounds();
 
         const center = bounds?.getCenter();
-        window.history.pushState(
-          {},
-          '',
-          `/?lat=${center?.lat()}&lng=${center?.lng()}&zoom=${map.getZoom()}`
-        );
+        window.history.pushState({}, '', `/?lat=${center?.lat()}&lng=${center?.lng()}&zoom=${map.getZoom()}`);
         const transformedBounds = transformGoogleBounds(map.getBounds());
 
         if (!isFetching) {
@@ -109,10 +103,16 @@ export function GoogleMap(props: GoogleMapsProps) {
           const boundedCameras = await api.getCamerasInBounds(
             transformedBounds
           );
-          const camMarkers: Record<string, [google.maps.Marker, Camera]> = {};
+          const camMarkers: Record<
+                        string,
+                        [google.maps.Marker, Camera]
+                    > = {};
           for (const camera of boundedCameras) {
             const marker = new google.maps.Marker({
-              position: new google.maps.LatLng(camera.lat, camera.lng),
+              position: new google.maps.LatLng(
+                camera.lat,
+                camera.lng
+              ),
               title: camera.label,
               icon: {
                 url: require('./camera.png'), // url
@@ -127,7 +127,7 @@ export function GoogleMap(props: GoogleMapsProps) {
             ...camMarkers,
             ...cameraMarkerAssociative,
           };
-          Object.values(merged).forEach(([marker, camera]) => {
+          Object.values(merged).forEach(async ([marker, camera]) => {
             map && marker.setMap(map);
             marker.addListener('click', () => {
               const point = transformLatLngToPoint(
@@ -150,7 +150,7 @@ export function GoogleMap(props: GoogleMapsProps) {
           setCameraMarkerAssociative(merged);
           setIsFetching(false);
         }
-      });
+      });       
     }
   }, [map, isFetching, cameraMarkerAssociative, setCurrentWindow]);
 
