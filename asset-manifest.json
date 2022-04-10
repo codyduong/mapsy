@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/HackKU2022/static/css/main.cd8fe565.css",
-    "main.js": "/HackKU2022/static/js/main.5618b1f4.js",
-    "static/js/787.41dc0abf.chunk.js": "/HackKU2022/static/js/787.41dc0abf.chunk.js",
-    "static/media/camera.png": "/HackKU2022/static/media/camera.a29a17eebc666b14e2ef.png",
-    "index.html": "/HackKU2022/index.html",
-    "main.cd8fe565.css.map": "/HackKU2022/static/css/main.cd8fe565.css.map",
-    "main.5618b1f4.js.map": "/HackKU2022/static/js/main.5618b1f4.js.map",
-    "787.41dc0abf.chunk.js.map": "/HackKU2022/static/js/787.41dc0abf.chunk.js.map"
+    "main.css": "/static/css/main.cd8fe565.css",
+    "main.js": "/static/js/main.fda7051d.js",
+    "static/js/787.41dc0abf.chunk.js": "/static/js/787.41dc0abf.chunk.js",
+    "static/media/camera.png": "/static/media/camera.a29a17eebc666b14e2ef.png",
+    "index.html": "/index.html",
+    "main.cd8fe565.css.map": "/static/css/main.cd8fe565.css.map",
+    "main.fda7051d.js.map": "/static/js/main.fda7051d.js.map",
+    "787.41dc0abf.chunk.js.map": "/static/js/787.41dc0abf.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.cd8fe565.css",
-    "static/js/main.5618b1f4.js"
+    "static/js/main.fda7051d.js"
   ]
 }
