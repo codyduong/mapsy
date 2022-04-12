@@ -41,11 +41,11 @@ jobs:
         git checkout -b "gh-pages" "origin/gh-pages"
         git stash pop
         rm -r static
-        rm asset-manifest.json
-        rm favicon.ico
-        rm index.html
-        rm manifest.json
-        rm robots.txt
+        rm -f asset-manifest.json
+        rm -f favicon.ico
+        rm -f index.html
+        rm -f manifest.json
+        rm -f robots.txt
         cp -R ./buildCI/* ./
         rm -r buildCI
         git add .
