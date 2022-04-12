@@ -30,7 +30,7 @@ jobs:
     - name: Build
       run: |
         yarn build
-        mv .\build\* buildCI
+        cp -r build buildCI
     - name: Commit build
       run: |
         git config --global user.name 'Cody Duong'
@@ -41,10 +41,12 @@ jobs:
         git checkout -b "gh-pages" "origin/gh-pages"
         git stash pop
         rm -r static
-        cp .\buildCI\* .
-        cp -r .\buildCI\css static
-        cp -r .\buildCI\js static
-        cp -r .\buildCI\media static
+        rm asset-manifest.json
+        rm favicon.ico
+        rm index.html
+        rm manifest.json
+        rm robots.txt
+        cp -r buildCI\* .
         rm -r buildCI
         git add .
         git commit -am "Automated Build"
