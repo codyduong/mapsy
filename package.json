@@ -1,5 +1,6 @@
 {
   "name": "hackku",
+  "homepage": "https://codyduong.github.io/mapsy/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
