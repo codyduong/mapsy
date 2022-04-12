@@ -95,7 +95,8 @@ export function GoogleMap(props: GoogleMapsProps) {
         const bounds = map.getBounds();
 
         const center = bounds?.getCenter();
-        window.history.pushState({}, '', `/?lat=${center?.lat()}&lng=${center?.lng()}&zoom=${map.getZoom()}`);
+        const githubUrl = process.env.GITHUB_OWNER ? `${process.env.GITHUB_REPOSITORY?.split('/')[1]}/` : '';
+        window.history.pushState({}, '', `${githubUrl}/?lat=${center?.lat()}&lng=${center?.lng()}&zoom=${map.getZoom()}`);
         const transformedBounds = transformGoogleBounds(map.getBounds());
 
         if (!isFetching) {
