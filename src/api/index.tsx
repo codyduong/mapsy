@@ -96,7 +96,7 @@ const api = {
   },
   // This calls a cloud-function which uses image detection
   detectObjects: async (url: string): Promise<DetectedObject[]> => {
-    return (await fetch('https://us-central1-hackku-2022.cloudfunctions.net/detect_objects', {method: 'POST', body: JSON.stringify({'url': url})})).json();
+    return (await fetch(`${process.env.REACT_APP_CLOUD_URL}/detect_objects `, {method: 'POST', body: JSON.stringify({url})})).json();
   },
   getWeather: async (latNLng: LatNLng) => {
     const url = `https://api.weather.gov/points/${latNLng.lat},${latNLng.lng}`;
