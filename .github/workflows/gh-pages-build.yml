@@ -46,7 +46,7 @@ jobs:
         rm index.html
         rm manifest.json
         rm robots.txt
-        cp -r buildCI\* .
+        cp -R ./buildCI/* ./
         rm -r buildCI
         git add .
         git commit -am "Automated Build"
