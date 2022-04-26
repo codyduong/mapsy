@@ -14,15 +14,24 @@ export type LatLng = {
   lng: number;
 };
 
-export const transformGoogleBounds = (bounds: any): Bounds => {
+export const transformGoogleBounds = (bounds: google.maps.LatLngBounds & {
+  zb?: {
+    h: number;
+    j: number;
+  }
+  Ua?: {
+    h: number;
+    j: number;
+  }
+}): Bounds => {
   return {
     lat: {
-      lower: bounds.zb.h,
-      upper: bounds.zb.j,
+      lower: bounds.zb?.h ?? bounds.getSouthWest().lat(),
+      upper: bounds.zb?.j ?? bounds.getNorthEast().lat(),
     },
     lng: {
-      lower: bounds.Ua.h,
-      upper: bounds.Ua.j,
+      lower: bounds.Ua?.h ?? bounds.getSouthWest().lng(),
+      upper: bounds.Ua?.j ?? bounds.getNorthEast().lng(),
     },
   };
 };

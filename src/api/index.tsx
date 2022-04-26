@@ -91,8 +91,6 @@ const api = {
       
     }
     return values as Camera[];
-
-    
   },
   // This calls a cloud-function which uses image detection
   detectObjects: async (url: string): Promise<DetectedObject[]> => {

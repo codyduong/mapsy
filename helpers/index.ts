@@ -1,4 +1,5 @@
-import { CAMERAS_LAWRENCE_KS } from './LAWRENCE_KS';
+import { US_KS__LAWRENCE, 
+  US_KS__OVERLAND_PARK } from './locations/';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'dotenv/config';
@@ -25,21 +26,29 @@ const app = firebase.initializeApp({
   measurementId: process.env.measurementId,
 });
 
-const CAMERAS: CAMERA[] = [...CAMERAS_LAWRENCE_KS];
+const main = (async () => {
+  const CAMERAS: CAMERA[] = [
+    ...US_KS__LAWRENCE,
+    ...await US_KS__OVERLAND_PARK,
+  ];
+  
+  const db = app.firestore();
+  const batch = db.batch();
+  const events = db.collection('cameras');
+  
+  for (const camera of CAMERAS) {
+    batch.set(events.doc(`${camera.COUNTRY_STATE__CITY}_${camera.label}`), camera);
+  }
+  
+  batch.commit();  
+});
 
-const db = app.firestore();
-const batch = db.batch();
-const events = db.collection('cameras');
-
-for (const camera of CAMERAS) {
-  batch.set(events.doc(), camera);
-}
-
-batch.commit();
+main();
 
 export type CAMERA = {
   label: string;
   image: string;
   lat: number; //+ is North, - is South
   lng: number; //+ is East,, - is West
+  COUNTRY_STATE__CITY: string; //COUNTRY_STATE__CITY
 };

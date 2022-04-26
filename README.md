@@ -17,21 +17,21 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/codyduong/HackKU2022">
+  <a href="https://github.com/codyduong/mapsy">
     <img src="https://media.discordapp.net/attachments/962428918206459924/962542551972339762/TH5Mgm-t.png?width=1328&height=972" alt="Logo" width="80" height="80">
   </a>
 
   <p align="center">
     Analyzing images from CCTV to determine road status
     <br />
-    <a href="https://github.com/codyduong/HackKU2022"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/codyduong/mapsy"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/codyduong/HackKU2022">View Demo</a>
+    <a href="https://github.com/codyduong/mapsy">View Demo</a>
     ·
-    <a href="https://github.com/codyduong/HackKU2022/issues">Report Bug</a>
+    <a href="https://github.com/codyduong/mapsy/issues">Report Bug</a>
     ·
-    <a href="https://github.com/codyduong/HackKU2022/issues">Request Feature</a>
+    <a href="https://github.com/codyduong/mapsy/issues">Request Feature</a>
   </p>
 </div>
 
@@ -69,7 +69,7 @@
 
 Mapsy is an interactive web app that analyzes CCTV imagery and weather data to determine realtime road conditions in Lawrence, KS.
 
-![https://images-ext-1.discordapp.net/external/1PF9Sg05omrRK1BQZvpFmxN98gngFbTb0wWgaHRC2D8/https/i.umai.pw/ZvmtHP.jpg?width=1736&height=815](https://images-ext-1.discordapp.net/external/1PF9Sg05omrRK1BQZvpFmxN98gngFbTb0wWgaHRC2D8/https/i.umai.pw/ZvmtHP.jpg?width=1736&height=815)
+![Image Demo'ing Mapsy](/docs/gallery.jpg)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -99,9 +99,9 @@ Make sure you have Node.js installed: [https://nodejs.org/](https://nodejs.org/)
 2. Generate a Google Maps API Key: [https://cloud.google.com/](https://cloud.google.com/)
 3. Clone the repo in terminal:
    ```sh
-   git clone https://github.com/codyduong/HackKU2022.git
+   git clone https://github.com/codyduong/mapsy.git
    ```
-4. In the main folder HACKKU2022, create a .env file and paste your API keys in there. Template below:
+4. In the main folder mapsy, create a .env file and paste your API keys in there. Template below:
    ```sh
    REACT_APP_GOOGLE_MAPS_API_KEY=
    REACT_APP_apiKey=
@@ -112,11 +112,12 @@ Make sure you have Node.js installed: [https://nodejs.org/](https://nodejs.org/)
    REACT_APP_appId=
    REACT_APP_measurementId=
    ```
-5. In terminal, run Yarn and use it to build the application:
-   ```js
-   yarn
-   yarn build
-   ```
+5. Develop or build as needed with
+  ```sh
+  yarn
+  yarn start
+  yarn build
+  ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -138,7 +139,7 @@ Mapsy makes it easier to view the current status of road conditions, especially 
 - [x] Add Google Maps API Integration
 - [x] Add current location zoom to Google Map, fully integrate Searchbar
 
-See the [open issues](https://github.com/codyduong/HackKU2022/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/codyduong/mapsy/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -172,16 +173,16 @@ Distributed under the MIT License.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/codyduong/HackKU2022.svg?style=for-the-badge
-[contributors-url]: https://github.com/codyduong/HackKU2022/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/codyduong/HackKU2022.svg?style=for-the-badge
-[forks-url]: https://github.com/codyduong/HackKU2022/network/members
-[stars-shield]: https://img.shields.io/github/stars/codyduong/HackKU2022.svg?style=for-the-badge
-[stars-url]: https://github.com/codyduong/HackKU2022/stargazers
-[issues-shield]: https://img.shields.io/github/issues/codyduong/HackKU2022.svg?style=for-the-badge
-[issues-url]: https://github.com/codyduong/HackKU2022/issues
-[license-shield]: https://img.shields.io/github/license/codyduong/HackKU2022.svg?style=for-the-badge
-[license-url]: https://github.com/codyduong/HackKU2022/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/codyduong/mapsy.svg?style=for-the-badge
+[contributors-url]: https://github.com/codyduong/mapsy/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/codyduong/mapsy.svg?style=for-the-badge
+[forks-url]: https://github.com/codyduong/mapsy/network/members
+[stars-shield]: https://img.shields.io/github/stars/codyduong/mapsy.svg?style=for-the-badge
+[stars-url]: https://github.com/codyduong/mapsy/stargazers
+[issues-shield]: https://img.shields.io/github/issues/codyduong/mapsy.svg?style=for-the-badge
+[issues-url]: https://github.com/codyduong/mapsy/issues
+[license-shield]: https://img.shields.io/github/license/codyduong/mapsy.svg?style=for-the-badge
+[license-url]: https://github.com/codyduong/mapsy/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
 [product-screenshot]: images/screenshot.png
