@@ -72,10 +72,10 @@ export function GoogleMap(props: GoogleMapsProps) {
           center,
           zoom,
           disableDefaultUI: true,
-          restriction: {
-            latLngBounds: LAWRENCE_BOUNDS,
-            strictBounds: false,
-          },
+          // restriction: {
+          //   latLngBounds: LAWRENCE_BOUNDS,
+          //   strictBounds: false,
+          // },
         })
       );
     }
@@ -97,9 +97,9 @@ export function GoogleMap(props: GoogleMapsProps) {
         const center = bounds?.getCenter();
         const currentPath = window.location.pathname ?? '/';
         window.history.pushState({}, '', `${currentPath}?lat=${center?.lat()}&lng=${center?.lng()}&zoom=${map.getZoom()}`);
-        const transformedBounds = transformGoogleBounds(map.getBounds());
+        const transformedBounds = bounds && transformGoogleBounds(bounds);
 
-        if (!isFetching) {
+        if (!isFetching && transformedBounds) {
           setIsFetching(true);
           const boundedCameras = await api.getCamerasInBounds(
             transformedBounds
@@ -137,6 +137,7 @@ export function GoogleMap(props: GoogleMapsProps) {
               );
               setCurrentWindow(
                 <CurrentWindow
+                  key={camera.label}
                   x={point.x}
                   y={point.y}
                   label={marker.getTitle()!}

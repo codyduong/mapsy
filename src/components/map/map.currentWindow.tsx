@@ -97,7 +97,7 @@ const GenerateBoundingText = (data: DetectedObject[]) => {
   for (const detectedObject of data) {
     elements.push(<FloatingText style={
       {left: detectedObject.boundingPoly.normalizedVertices[0].x * XSize,
-        top: detectedObject.boundingPoly.normalizedVertices[0].y * YSize
+        top: detectedObject.boundingPoly.normalizedVertices[0].y * YSize,
       }}>{`${detectedObject.name}: ${detectedObject.score}`}</FloatingText>);
   }
   return elements;
